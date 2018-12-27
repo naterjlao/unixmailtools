@@ -1,0 +1,16 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.1-alpha*
+UPDATES:
+- created `mailtools-install/`uninstall scripts for the vm
+- established a default config file: `/home/user/.mailtools/config.yml`
+- set the /var/mail/user (inbox) as the default mailbox. (`mailtools --search bar`) this can be overridden by --use (`mailtools --use foo --search bar`)
+- Argument syntax for the command line interface has been updated
+- Installation/removal bugs squashed
+- Website started
+- Work on IFTTT
+- Installation instructions posted in docs
+TODO:
+- implement IFTTT actions on front end
+- refactor mbox_database code in order to utilize user config
+
+current build: `/build/deb/releases/mailtools_1.1.1-alpha_x86_64.deb`
+

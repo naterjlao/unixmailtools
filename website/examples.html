@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"; charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <!-- bootstrap reference in stylesheet.css file -->
+    <link rel="stylesheet"  type="text/css" href="css/stylesheet.css">
+    <title>Examples</title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5">
+          <h1 class="bd-title" style="color:#690002">Examples</h1>
+          <br>
+            <p>
+              Below are some business logic examples using <i>Mailtools</i>
+            </p>
+            <br>
+            <ul>
+                <li>Using the user inbox, create a new <i>mbox</i> file called <i>baz.mbox</i> containing every mail that does not contain the string 'John' in its <i>To</i> field.:</li>
+                <code>mailtools search -t 'John' --negate --output baz.mbox</code>
+                <br><br>
+
+                <li> Using the user's inbox and the <i>Mailscript</i> sort_to_folders.ms, create a cronjob that performs the scripts actions every day at midnight:
+                </li>
+                <code>mailtools process --file sort_to_folders.ms --cron '0 0 * * *'</code>
+                <br><br>
+
+                <li>Using the archive <i>foo.mbox</i> to search for the <i>Subject</i> 'Space'. For all matches, create a <i>csv</i> of each entity named <i>bar.csv</i>, containing the <i>From</i> and <i>Date</i> field:</li>
+                <code>mailtools --use foo.mbox search -s 'Space' --list_field 'From' --list_field 'Date' > bar.csv</code>
+                <br><br>
+
+                <li>Using the <i>mbox</i>, <i>revenge.mbox</i>, match <i>all</i> mail in it and forward it to <code>spammer@hack.com</code>:
+                </li>
+                <code>mailtools --use revenge.mbox search --forward spammer@hack.com</code>
+                <br><br>
+
+                <li>Just like the above example, but instead of sending to just one address, pull a number of addresses from the user's inbox mailbox that were filtered out by having the word 'spam' in the email's contents:</li>
+                <code>mailtools search -b 'spam' --list_field 'From' | sort | uniq | paste -sd ' ' | xargs -I{} mailtools --use revenge.mbox search --forward {} </code>
+            </ul>
+          </main>
+        </div>
+      </div>
+      
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $(function(){
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+      });
+    </script>
+  </body>
+  <div id="footer" class="fixed-bottom"></div>
+</html>

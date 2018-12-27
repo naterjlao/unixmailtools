@@ -1,0 +1,13 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.9-alpha*
+UPDATES:
+- Exception catching implemented for process actions
+- Mailscript multiple files implemented ie.  `mailtools process --file foo.ms --file bar.ms`
+- Verbosity settings implemented
+- Field Listing in Search: `mailtools search --list_field Subject --list_field`:
+	- outputs the field values for every mail in csv format (see following post)
+
+TODO:
+- Cron wrapper code needs an update (or at least deletion added)
+
+current build: `/build/deb/releases/mailtools_1.1.9-alpha_x86_64.deb`
+

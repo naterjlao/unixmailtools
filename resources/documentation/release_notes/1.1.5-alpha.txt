@@ -1,0 +1,15 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.5-alpha*
+UPDATES:
+- Process (IFTTT) implemented in frontend
+	- Ability to read files
+	- Able to parse and execute mailscript code
+- Cron implemented as a process option
+	- selected mailscript file saved to `$HOME/.mailtools/mailscript_jobs
+	- crontab updated to refer to saved mailscript file
+
+TODO:
+- added a exception catcher on frontend to make pretty fails
+- At jobs need to be implemented
+
+current build: `/build/deb/releases/mailtools_1.1.5-alpha_x86_64.deb`
+

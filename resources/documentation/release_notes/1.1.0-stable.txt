@@ -1,0 +1,17 @@
+Created stable release of mailtools_1.1.0-stable_x86_64.deb will be demonstrated to purtilo today
+Features:
+       -command line frontend with argument parsing and help docs
+       -mail ingest operations over mbox files
+       -Search capabilities with partial string matching over fie$
+       -mail client integration (ie. Thunderbird)
+       -full installation and removal scripts
+Limitations:
+       -project dependencies not defined (both apt and pip)
+       -process not yet implemented in CLI
+       -IFTTT not implemented
+       -mail cron jobs not implement
+       -interpreter not implemented
+       -mailscript not implemented
+       -configuration file is installed in
+       /home/user/.mailtools/config.yml but not actively used
+deb package is located in `build/deb/packages`

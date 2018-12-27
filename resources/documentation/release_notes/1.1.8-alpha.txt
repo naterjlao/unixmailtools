@@ -1,0 +1,15 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.8-alpha*
+UPDATES:
+- Replying/Sending to from fields in results implemented
+- Code removal bug for .bashrc fixed
+- search negation and exact strings implemented
+- `--info` text updated
+
+TODO:
+- added a exception catcher on frontend to make pretty fails
+- At jobs need to be implemented
+- Cron wrapper needs update (at least deletion added)
+- regex checks to fowarding recipients email addresses
+
+current build: `/build/deb/releases/mailtools_1.1.8-alpha_x86_64.deb`
+

@@ -1,0 +1,16 @@
+################################################################################
+# File: postint
+# Language: Bash
+# Author: Nathaniel Lao (nlao@terpmail.umd.edu)
+#
+# Debian packaging post installation script for the mailtools debian package.
+################################################################################
+
+# Make sure all bin files are executable
+cd /usr/lib/mailtools/bin
+chmod +x *
+
+# Generate symbolic link to the frontend driver in the user's bin
+cd /usr/bin
+ln -s /usr/lib/mailtools/bin/mailtools.py mailtools
+

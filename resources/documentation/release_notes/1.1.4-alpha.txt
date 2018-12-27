@@ -1,0 +1,18 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.4-alpha*
+UPDATES:
+- Process command arguments added as per spec. Backend component not yet linked.
+- Ability to provide mail custom fields is supported in search queries.
+- Added a reset configuration option for frontend (`--reset_config`)
+- Created thunderbird setup instructions under docs/instruction_manual
+- `--info` information text updated
+- Command Line argument completion implemented
+
+TODO:
+- Cron/At jobs need to be implemented in frontend. Jobs need to be stored persistently
+in database.
+- Shell redirection not implemented. (may consider using -o tag)
+- Need to provide user the ability to list all possible mail fields to search in an
+mbox.
+
+current build: `/build/deb/releases/mailtools_1.1.4-alpha_x86_64.deb`
+

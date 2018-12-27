@@ -1,0 +1,25 @@
+################################################################################
+# File: prerm
+# Language: Bash
+# Author: Nathaniel Lao (nlao@terpmail.umd.edu)
+#
+# Debian packaging pre-removal script for the mailtools debian package.
+################################################################################
+
+################################################################################
+# Drop the mailtools mongo databases for all users:
+#	- find all instances of the 'mongo_db_name:' field-values in all users
+#	- pull only the field
+#	- pipe to the mongo drop command
+################################################################################
+grep -hr 'mongo_db_name:' /home/*/.mailtools/config.yml | sed 's/mongo_db_name: //' | xargs -I{} mongo {} --eval 'db.dropDatabase()'
+
+# Call user_teardown to clearout user specific files
+/usr/lib/mailtools/bin/sudo_teardown.sh
+
+# Cleanup residual files in /usr/lib/mailtools
+rm -rvf /usr/lib/mailtools
+
+# Remove the symbolic link in bin
+rm -rvf /usr/bin/mailtools
+

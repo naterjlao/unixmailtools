@@ -1,0 +1,16 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.7-alpha*
+UPDATES:
+- Bug fix for the reinstalling mailtools (with mailtools already installed)
+- quiet and verbose options implemented
+- fowarding to one or more recipients implemented for search function
+- saving to user-specified mbox file option added
+- saving to user-specified attachment folder option added
+
+TODO:
+- added a exception catcher on frontend to make pretty fails
+- At jobs need to be implemented
+- regex checks to fowarding recipients email addresses
+- `--not` and `--exact_string` need to be implemented on frontend
+
+current build: `/build/deb/releases/mailtools_1.1.7-alpha_x86_64.deb`
+

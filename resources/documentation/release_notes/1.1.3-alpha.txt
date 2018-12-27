@@ -1,0 +1,13 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.3-alpha*
+UPDATES:
+- `InternetHistory-Archive` sample mbox file added to the vm in `/home/cmsc435/mail`
+- `mailtools` arguments updated. Verbosity of `search` has been expanded as per the
+	spec. See `mailtools --help` `mailtools search --help` and `mailtools process --help`
+	for more information
+- search can run on multiple fields and user defined fields ie. `mailtools search --field FIELD VALUE`
+
+TODO:
+- !!! IFTTT/Process needs to be implemented in frontend
+- Thunderbird setup instructions need to be drafted
+
+current build: `/build/deb/releases/mailtools_1.1.3-alpha_x86_64.deb`

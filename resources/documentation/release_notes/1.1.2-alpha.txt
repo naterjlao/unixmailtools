@@ -1,0 +1,22 @@
+*DEVELOPMENT STATUS FOR MAILTOOLS ALPHA BUILD 1.1.2-alpha*
+UPDATES:
+- version tags refactored for consistency
+- created proprietary Config.py for configuration lookup in python modules
+	- Config.py location in svn: `src/config`
+	- user config location: `/home/user/.mailtools/config.yml`
+	- implemented in frontend
+	- implemented on mbox_database:
+		- database names are dependent on user config
+		- attachment location is dependent on user config. By default, attachments
+			are saved to /home/user/.mailtools/attachment
+- a specific mongo database is now created for each user
+	- removal will delete all mongo db traces for each user 
+		- TODO: this was not whitebox tested. See `build/deb/DEBIAN/prerm` for
+		the actual code that performs this.
+TODO:
+- test the aforementioned TODO in UPDATES
+- !!! Search arguments in frontend need to updated as per the specs
+- !!! IFTTT needs to be implemented in frontend
+- Thunderbird setup instructions need to be drafted
+
+current build: `/build/deb/releases/mailtools_1.1.2-alpha_x86_64.deb`

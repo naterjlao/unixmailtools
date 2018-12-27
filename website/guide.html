@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"; charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <!-- bootstrap reference in stylesheet.css file -->
+    <link rel="stylesheet"  type="text/css" href="css/stylesheet.css">
+
+    <title>Mailtools</title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 sidebar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="guide.html">User's Guide</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="mailscript.html">MailScript</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="ThunderbirdSetup.html">Using Thunderbird</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="faq.html">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="FinalSummary.html">Final Summary</a>
+            </li>
+          </ul>
+        </div>
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5">
+          <h1 class="bd-title" style="color:#690002">Mailtools User's Guide</h1>
+          <h2> Quick Start Guide </h2></br>
+          <p>
+            This guide is not meant to be comprehensive, so we recommend that you
+            use many available online
+            <a href="https://en.wikipedia.org/wiki/List_of_Unix_commands">resources</a>
+            to become more acquainted with UNIX terminal commands.
+          </p></br>
+          <ol>
+            <li>Run <i>Mailtools</i> on the user's inbox file:</li>
+              <figure>
+                <code class="language-python" data-lang="python">
+            	     mailtools
+                </code>
+              </figure>
+              <ul>
+            		<li>
+            			By default, <i>Mailtools</i> will use the mbox file located in
+            			<code>/usr/mail/username</code>.</li>
+            		<li>
+            			The default mbox file location can be changed in the user's
+            			configuration file under <code>/home/username/.mailtools/config.yml</code>.
+            		</li>
+              </ul>
+            </br>
+            <li>Run <i>Mailtools</i> on a specific mbox file:</li>
+              <figure>
+                <code class="language-python" data-lang="python">
+                   mailtools --use FILEPATH
+                </code>
+              </figure>
+              <ul>
+                <li>
+                	<code>FILEPATH</code> is the relative or absolute filepath
+                	to the mbox file.
+                </li>
+                <li> Examples:
+                	<ul>
+                		<li>
+                			<code class="language-python" data-lang="python">mailtools --use foo.mbox</code>
+                		</li>
+                		<li>
+                			<code class="language-python" data-lang="python">mailtools --use /home/john/archive/bar.mbox</code>
+                		</li>
+                	</ul>
+                </li>
+              </ul>
+              <br/>
+            <li>Search the mailbox for specific field:</li>
+            <figure>
+              <code class="language-python" data-lang="python">
+                 mailtools search [&lt;TAG&gt; VALUE]... [--negate]
+                 [--exact_string] [-o FIELD | --output FIELD] [--list_field FIELD]
+                 [--attachments ATTACH_DIR] [--reply] [--forward RECIPIENT [RECIPIENT ...]]
+              </code>
+            </figure>
+            <ul>
+              <li>
+              	<code>&lt;TAG&gt;</code> is the field being queried in the search.
+              	The following are possible queries for this parameter:
+              	<ul>
+              		<li><code>-s</code>: search by Subject field.</li>
+              		<li><code>-b</code>: search by Body field.</li>
+              		<li><code>-f</code>: search by From field.</li>
+              		<li><code>-t</code>: search by To field.</li>
+              		<li><code>-rt</code>: search by Reply-To field.</li>
+              		<li><code>-cc</code>: search by CC field.</li>
+              		<li><code>-bcc</code>: search by BCC field.</li>
+              		<li><code>-d</code>: search by Date field.</li>
+              		<li><code>-p</code>: search by Priority field.</li>
+              		<li><code>-atn</code>: search by Attachment Name field.</li>
+              		<li><code>-atf</code>: search by Attachment Format field.</li>
+              		<li><code>-ats</code>: search by Attachment Status field.</li>
+              		<li>
+              			<code>--field</code>: search by a user specified <code>FIELD</code> for a <code>VALUE</code>.
+              			This is the only <code>&lt;TAG&gt;</code> that accepts only
+              			2 parameters. <br>Syntax:
+              			<code>mailtools search --field &lt;FIELD&gt; &lt;VALUE&gt;</code>
+              		</li>
+                  </ul>
+              </li>
+              <li>
+              	<code>VALUE</code> is the target of the search. By default,
+              	<code>search</code> conducts a partial match.
+              </li>
+              <li>
+              	Note that the <code>&lt;TAG&gt;</code> and <code>&lt;VALUE&gt;</code>
+              	query pairs are actual optional. If no <code>&lt;TAG&gt;</code>
+              	<code>&lt;VALUE&gt;</code> pair is provided, the <code>search</code> will
+              	result in the entirety of the input mailbox. Multiple pairs can
+              	be combined in a search. The search query will be a conjunctive
+              	form of these pairs.
+   				(i.e. <b>AND</b> operator between queries).
+              </li>
+              <li>
+              	<code>--negate</code> is an optional argument that returns the
+              	negation of the search query. This is performed after all matching
+              	of the original search query.
+              </li>
+              <li>
+              	<code>--exact_string</code> is an optional argument that returns
+              	the results of the exact strings of the input mailbox.
+              </li>
+              <li>
+              	<code>-o</code> or <code>--output</code> is an optional argument
+              	that outputs the results of the search query in a user-specified
+              	<code>FILE</code>. <br>Syntax:
+              		<code>mailtools search &lt;TAG VALUE PAIR&gt; -o FILE</code>
+              </li>
+              <li>
+              	<code>--list_field</code> is an optional argument
+              	that prints to <code>STDOUT</code> the user-specified <code>FIELD</code>
+              	of the email results. Multiple <code>--list_field</code> <code>FIELD</code>
+              	pairs can be given. The output of this will be query in a comma-separated value
+              	matrix (CSV).<br> Syntax:
+              		<code>mailtools search &lt;TAG VALUE PAIR&gt; --list_field FIELD</code>
+              </li>
+              <li>
+              	<code>--attachments</code> is an optional argument
+              	that outputs the attachments of the email results to a user-specified
+              	attachment directory.<br> Syntax:
+              		<code>mailtools search &lt;TAG VALUE PAIR&gt; --attachments ATTACH_DIR</code>
+              </li>
+              <li>
+              	<code>--reply</code> is an optional argument
+              	that will prompt the user to send a mass email to all addresses in the
+              	<i>From</i> field in the email results.<br> Syntax:
+              		<code>mailtools search &lt;TAG VALUE PAIR&gt; --reply</code>
+              </li>
+              <li>
+              	<code>--forward</code> is an optional argument
+              	that forwards the mail results to a list of one or more recipients.
+              	<br> Syntax:
+              		<code>mailtools search &lt;TAG VALUE PAIR&gt; --forward RECIPIENT [RECIPIENT ...]</code>
+              </li>
+              <li>Examples:
+              	<ul>
+              	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -f John
+                		</code><br>
+                		Search the inbox for all mail containing the string "John" in
+                		its <i>From</i> field.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools --use foo.mbox search -d '30 Nov 2018'
+                		</code><br>
+                		Search the 'foo.mbox' for all mail containing the string "30 Nov 2018" in
+                		its <i>Date</i> field.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools --use bar.mbox search -s 'space invaders' --negate
+                		</code><br>
+                		Search the 'bar.mbox' for all mail that does not contain the
+                		string "space invaders" in its <i>Subject</i> field.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search --field 'Secret' 'veinule' --exact_string
+                		</code><br>
+                		Search the inbox for all mail containing the exact
+                		string "veinule" in its <i>Secret</i> field.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -f John --output 'john.mbox'
+                		</code><br>
+                		Search the inbox for all mail containing the string "John" in
+                		its <i>From</i> field and save that to a file called "john.mbox".
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -f John --list_fields 'Date'
+                		</code><br>
+                		Search the inbox for all mail containing the string "John" in
+                		its <i>From</i> field and printout all 'Date' values from the mail
+                		results.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -f John --list_fields 'Date' --list_fields 'Subject'
+                		</code><br>
+                		Search the inbox for all mail containing the string "John" in
+                		its <i>From</i> field and printout all 'Date' and 'Subject'
+                		values from the mail results.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -f John --attachments 'john_attachments'
+                		</code><br>
+                		Search the inbox for all mail containing the string "John" in
+                		its <i>From</i> field and save all attachments in a folder called
+                		'john_attachments'
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -s 'change' --reply
+                		</code><br>
+                		Search the inbox for all mail containing the string "change" in
+                		its <i>Subject</i> field and create an email to reply to everyone
+                		in the mail results.
+                	</li>
+                	<li>
+              		<code class="language-python" data-lang="python">
+                   		mailtools search -s 'change' --forward 'john@email.com'
+                		</code><br>
+                		Search the inbox for all mail containing the string "change" in
+                		its <i>Subject</i> field and forward the email results to the
+                		email address, "john@email.com".
+                	</li>
+              </li>
+            </ul>
+              </ul>
+              <li>Process a <i>Mailscript</i> file.</li>
+                  <figure>
+                  <code class="language-python" data-lang="python">
+            	         mailtools process --file FILEPATH [--cron TIME]
+                  </code>
+                  </figure>
+                  <ul>
+                      <li><i>Mailtools</i> runs the <i>Mailscript</i> defined in <code>FILEPATH</code>.</li>
+                      <li><code>--file</code> is REQUIRED as an argument tag.</li>
+                      <li><code>FILEPATH</code> is REQUIRED as an argument. This is the relative or absolute path to the <i>Mailscript</i> file.</li>
+                      <li><code>--cron</code> is an optional argument. The provided <code>TIME</code> code is in <i>cron</i> <a href='http://www.nncron.ru/help/EN/working/cron-format.htm'>format</a>. <i>Mailtools</i> will save the provided
+                      <i>Mailscript</i> file under the <code>/home/username/.mailtools/mailscript_jobs</code> directory. In order
+                      to stop <i>cronjobs</i>, the associated command has to be deleted in the <code>crontab</code> and the saved <i>mailscript</i>
+                      can be optionally deleted in <code>/home/username/.mailtools/mailscript_jobs</code>.</li>
+                      <li> Examples:
+                          <ul>
+                              <li>
+                                  <code> mailtools process --file foo.ms</code><br>
+                                  Run the 'foo.ms' <i>Mailscript</i> file on the user's inbox.
+                              </li>
+                              <li>
+                                  <code> mailtools --use baz.mbox process --file bar.ms --cron '* * * * *'</code><br>
+                                  Run the 'bar.ms' <i>Mailscript</i> file on the 'baz.mbox' and set a <i>cronjob</i> on this command.
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              <li> Optional Arguments:
+                  <ul>
+                      <li><code>--info</code> Printout <i>Mailtools</i> configuration information.</li>
+                      <li><code>--quiet</code> Run <i>Mailtools</i> without terminal output (quietly).</li>
+                      <li><code>--verbose</code> Run <i>Mailtools</i> with debug information.</li>
+                      <li><code>--reset</code> Reset the <i>Mailtools</i> database.</li>
+                      <li><code>--reset_config</code> Reset the <i>Mailtools</i> configuration to the default configuration at setup.</li>
+                  </ul>
+              </li>
+          </ol>
+          &nbsp;&nbsp;&nbsp;&nbsp; </br>
+          &nbsp;&nbsp;&nbsp;&nbsp; </br>
+          &nbsp;&nbsp;&nbsp;&nbsp; </br>
+        </main>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $(function(){
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+      });
+    </script>
+  </body>
+  <div id="footer"  class="fixed-bottom">></div>
+</html>

@@ -1,0 +1,12 @@
+################################################################################
+# File: config.yml
+# Path: /usr/etc/mailtools
+# Language: YAML
+# Author: Nathaniel Lao (nlao@terpmail.umd.edu)
+#
+# User configuration file for mailtools. This is initialized with default values
+# and is appended with additional user-specific settings when 'mailtools' is
+# first called.
+#
+################################################################################
+

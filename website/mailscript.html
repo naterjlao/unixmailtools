@@ -1,0 +1,354 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"; charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <!-- bootstrap reference in stylesheet.css file -->
+    <link rel="stylesheet"  type="text/css" href="css/stylesheet.css">
+    <title>MailScript Guide</title>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 sidebar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" href="guide.html">User's Guide</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="mailscript.html">MailScript</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="ThunderbirdSetup.html">Using Thunderbird</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="faq.html">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="FinalSummary.html">Final Summary</a>
+            </li>
+          </ul>
+        </div>
+        <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5">
+          <h1 class="bd-title" style="color:#690002">MailScript Guide</h1>
+          <br/>
+          <p>
+            MailScript is a declarative language which gives Mailtools the bulk of
+            its power. Inspired by tools such as Sieve and Prolog, with syntax that
+            draws from C and Lisp, MailScript allows for mail to be filtered and acted
+            upon in a user-defined manner.
+          </p>
+          <br/>
+          <h3 id="script-format">Script Format</h3>
+          <p>
+          Scripts are written in UTF-8 encoded text files with the .ms extension.
+          Whitespace is ignored, but examples here will include it for readability.
+          Each script consists of a header, a body, and a footer. The header must be
+           the topmost part of the script and is non-optional. It is preceded and
+           succeeded by “%%%” and consists of exactly one version statement followed
+            by optional action definitions.
+          </p>
+          <p>
+            The footer follows the body and must be the last part of the script. It
+            is optional if no custom actions are defined in the header and
+            non-optional otherwise. The footer is preceded and succeeded by “~~~”
+            and consists of valid Python 3 code. Each custom action defined in the
+            header must have a corresponding function in the footer and must take as
+             many arguments as the action plus one at the end for the environment.
+             Arguments are passed as strings and must be looked up in the
+             environment to retrieve their values.
+           </p>
+           <p>
+             The body is also non-optional and must follow the header. It consists
+             of an if-else chain. If-else chains themselves consist of an if
+             statement and an optional list of else if statements. Each of these
+             contains a match statement and a body. The body may consist of either
+             another if-else chain or an action list. Action lists consist of a list
+              of actions and variable tests. Variable tests are similar to if-else
+              chains except, but with a few key differences. Variable tests contain
+              if and else if statements, but they may also contain else statements.
+              Furthermore they contain test statements instead of match statements
+              and their bodies consist only of action lists.
+            </p>
+            <br/>
+            <p>
+              The nested match statements are flattened and combined into queries to
+               the underlying database while the action lists and variable tests
+               represent the logic performed on those queries’ results. Match
+               statements are surrounded by parenthesis and consist of the match
+               name followed by a list of arguments.
+             <br/>
+             <strong>Example:</strong>
+                <code>(regex-match msg.From /(joe|gary)@cs\.umd\.edu/)</code>
+                <br>
+                This statement performs a regular expression match on the incoming
+                message’s From field.
+            </p>
+            <br/>
+            <p>
+              Action statements are similarly surrounded by parenthesis and consist
+              of the action name followed by a list of arguments.
+            <br/>
+            <strong>Example:</strong>
+            <code>(set msg.Subject “Friday”)</code>
+            <br/>
+              This action sets the subject of the message object represented by
+              “msg” to the string “Friday”.
+            </p>
+            <br/>
+            <p>
+              Variable tests are similar in form to match statements.
+            <br/>
+            <strong>Example:</strong>
+            <pre>
+              <code>
+            if (defined msg2) {
+              (send msg2)
+            } else {
+              (send msg1)
+            }
+              </code>
+            </pre>
+            The above checks if the variable “msg2” has been defined and sends
+            the message it represents, sending the message represented by “msg1”
+            otherwise.
+            </p>
+            <p>
+              Arguments may be of the following types: strings, message fields,
+              regular expressions, identifiers, and numbers. Numbers may be positive
+              or negative, integers or floating point. Identifiers may consist of
+              numbers, letters, hyphens, and underscores where the first character
+              must be a letter. Regular expressions are the same as Python 3 regular
+              expressions except that they must be enclosed in forward slashes.
+              Message fields consist of an identifier representing the message name,
+              a period, and an identifier representing the name of the field. The
+              field may be any header field in Python 3’s mailbox.mboxMessage class in
+               addition to “Body”. Strings must be enclosed by quotation marks.
+             </p>
+             <br/>
+             <h3 id="header-fields"> Header Fields </h3>
+             <ul>
+               <li><code>(version <i>num</i>)</code>
+                 This declares that version num of MailScript is being used. As of
+                 writing the latest (and only) version is 1.
+               </li>
+               <li><code>(define <i>act fun</i>)</code>
+                 This defines the custom action <i>act</i> that corresponds to the function <i>fun</i> in the footer.
+               </li>
+             </ul>
+             <br/>
+             <h3 id="match-statements"> Match Statements </h3>
+            <p>
+              The following is a list of all match statements and a description of
+              each. Argument names are in <i>italics</i>.
+            </p>
+            <ul>
+              <li> <code>(match <i>field str</i>)</code><br/>
+                Checks if the message field field contains the string <i>str</i>.
+              </li>
+              <li> <code>(regex-match <i>field regex</i>)</code><br/>
+                Checks if the message field <i>field</i> matches the regular expression
+                <i>regex</i>. Note that regex must be a valid Python 3 regular expression.
+              </li>
+              <li> <code> (exact-match <i>field str</i>)</code><br/>
+                Checks if the message field <i>field</i>  exactly matches the string
+                <i>str</i>.
+              </li>
+              <li> <code> (has-attachments <i>msg</i>)</code><br/>
+                Checks if the message <i>msg</i>  has any attachments.
+              </li>
+              <li> <code> (file-attached <i>msg filename</i>) </code><br/>
+                Checks if the message <i>msg</i>  has a file named <i>filename</i>
+                attached. <strong> Note that <i>filename</i> is case-sensitive and must
+                contain the file extension. </strong>
+              </li>
+              <li> <code> (and <i>match</i>...) </code><br/>
+                Passes iff all of the match satements <i>matches</i> pass.
+              </li>
+              <li> <code> (or <i>match</i>...) </code><br/>
+                Passes iff one of the match satements <i>matches</i> pass.
+              </li>
+              <li> <code> (not <i>match</i>...) </code><br/>
+                Passes iff the match satements <i>match</i> pass.
+              </li>
+            </ul>
+            <br/>
+            <h3 id="actions"> Actions </h3>
+            <p>
+              The following is a list of all built-in actions with a description of
+              their function and arguments.
+            </p>
+            <ul>
+              <li> <code>(create <i>msg</i>)</code><br/>
+                Creates a new mailbox.mboxMessage object in the environment with name
+                <i> msg</i>. Fails if <i> msg</i> is already in the environment.
+              </li>
+              <li> <code>(copy <i>src dst</i>)</code><br/>
+                Shallow-copies the message <i>src</i> and stores it in the environment as <i>dst</i>.
+              </li>
+              <li> <code>(save-to <i>file</i>)</code><br/>
+                Handled specially by Mailtools, this sets a flag to append the
+                unmodified message to the file <i>file</i>, creating it if it does not
+                already exist.
+              </li>
+              <li> <code>(set <i>field val</i>)</code><br/>
+                Sets the message field <i>field</i> to <i>value</i>. Fails if the message does not exist in the environment.
+              </li>
+              <li> <code>(set-var <i>var val</i>)</code><br/>
+                Sets the variable <i>var</i> to the value <i>val</i> in the environment. Variables
+                set this way persist in the environment for the entire rest of the
+                script’s processing.
+              </li>
+              <li> <code>(send <i>msg</i>)</code><br/>
+                Sends the message <i>msg</i> using the SMTP information defined in the configuration files.
+              </li>
+              <li> <code>(reply <i>msg1 msg2</i>)</code><br/>
+                Replies to <i>msg1</i> with <i>msg2</i>. Modifies the fields of <i>msg2</i> in the process.
+              </li>
+              <li> <code>(forward <i>msg to</i>)</code><br/>
+                Forwards the message <i>msg</i> to the address <i>to</i>.
+              </li>
+              <li> <code>(write-attachments <i>msg path</i>)</code><br/>
+                Writes all of the message <i>msg</i>’s attachments to the directory <i>path</i>.
+              </li>
+              <li> <code>(write-msg <i>msg file</i>)</code><br/>
+                Appends the message <i>msg</i> to the mbox file <i>file</i>, creating
+                it if it does not exist. This is different than save-to in that this
+                message may be modified first.
+              </li>
+            </ul>
+            <br/>
+            <h3 id="variable-tests"> Variable Tests </h3>
+            <p>
+              The following are valid test statements.
+            </p>
+            <ul>
+              <li> <code>(equal <i>var val</i>)</code><br/>
+                Passes iff the variable <i>var</i> is equal (as the Python == operator)
+                to the value <i>val</i>.
+              </li>
+              <li> <code>(defined <i>var</i>)</code><br/>
+                Passes iff the variable <i>var</i> has been defined (exists in the environment).
+              </li>
+              <li> <code>(or <i>tests...</i>)</code><br/>
+                Passes iff at least one of the tests in the test list <i>tests</i> passes.
+              </li>
+              <li> <code>(and <i>tests...</i>)</code><br/>
+                Passes iff all the tests in the test list <i>tests</i> pass.
+              </li>
+              <li> <code>(not <i>test</i>)</code><br/>
+                Passes iff the test <i>test</i> does not pass.
+              </li>
+            </ul>
+            <br/>
+            <h3 id="sample-script"> Sample Script </h3>
+            <p>
+              The following script forwards all messages from the address “joe@email.com”
+              to the address “joe-archive@email.com”, saves it to the file “joe.mbox”,
+              and checks if the variable “seen” has been defined. If so it prints the
+              message to stdout, otherwise it set the variable to 1.
+            </p>
+            <pre>
+              <code>
+              %%%
+              (version 1)
+              (define printout print_fun)
+              %%%
+
+              if(regex-match msg.From /joe@email\.com/) {
+                (forward msg “joe-archive@email.com”)
+                (save-to “joe.mbox”)
+                if(defined seen) {
+                  (printout msg)
+                } else {
+                  (set-var seen 1)
+                }
+              }
+
+              ~~~
+              def print_fun(msg, env):
+                print(env[msg])
+              ~~~
+            </code>
+          </pre>
+          <h3 id="formal-grammar"> Formal Grammar </h3>
+          <p> The following is the formal grammar used in parsing MailScript with Lark extensions. </p>
+          <pre>
+            <code>
+              if_else_chain: if_statement else_statement*
+
+              if_statement: "if" match_statement "{" if_else_chain "}"
+                  |  "if" match_statement "{" action_list "}"
+
+              else_statement: "else" "if" match_statement "{" if_else_chain "}"
+                  |  "else" "if" match_statement "{" action_list "}"
+
+              match_statement: "(" IDENTIFIER (match_statement | argument)* ")"
+
+              action_list: (action_statement | variable_test)+
+
+              action_statement: "(" IDENTIFIER argument* ")"
+
+              variable_test: var_if (var_elif)* (var_else)?
+
+              var_if: "if" var_test "{" action_list "}"
+              var_elif: "else" "if" var_test "{" action_list "}"
+              var_else: "else" "{" action_list "}"
+
+              var_test: "(" TEST IDENTIFIER argument* ")"
+                  |  "(" LOGIC_TEST var_test+ ")"
+
+              TEST: ("equal" | "defined")
+
+              LOGIC_TEST: ("and" | "or" | "not")
+
+              argument: STRING
+                  |  NUMBER
+                  |  IDENTIFIER
+                  |  msg_field
+                  |  REGEX
+
+              COMMENT: /;.*/
+
+              msg_field: IDENTIFIER "." IDENTIFIER
+
+              REGEX: /\/.*\//
+
+              IDENTIFIER: /[A-Za-z]([A-Za-z0-9]|-|_)*/
+
+              %import common.WS
+              %import common.NUMBER -> NUMBER
+              %import common.ESCAPED_STRING -> STRING
+
+              %ignore WS
+              %ignore COMMENT
+            </code>
+          </pre>
+        </main>
+        <div class="d-none d-xl-block col-xl-2">
+          <ul class="section-nav">
+            <li class="nav-link"><a href="#script-format">Script Format</a></li>
+            <li class="nav-link"><a href="#header-fields">Header Fields</a></li>
+            <li class="nav-link"><a href="#match-statements">Match Statements</a></li>
+            <li class="nav-link"><a href="#actions">Actions</a></li>
+            <li class="nav-link"><a href="#variable-tests">Variable Tests</a></li>
+            <li class="nav-link"><a href="#sample-script">Sample Script</a></li>
+            <li class="nav-link"><a href="#formal-grammar">Formal Grammar</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $(function(){
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+      });
+    </script>
+  </body>
+  <div id="footer" class="fixed-bottom"></div>
+</html>
