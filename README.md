@@ -1,9 +1,9 @@
 # Unix Mailtools
+Version: _1.3.0-stable_
+
 Unix-based mail tool for Debian systems.
 
-[mailtools_1.3.0-stable_x86_64.deb](http://unixmailtools.com/mailtools_1.3.0-stable_x86_64.deb)
-
-Installation instructions and tutorials: <http://unixmailtools.com>
+Installation Instructions and Tutorials: <http://unixmailtools.com>
 
 Authors:
 - [Nate Lao](http://natelao.com)
