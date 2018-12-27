@@ -1,7 +1,7 @@
 # Unix Mailtools
 Version: _1.3.0-stable_
 
-Unix-based mail tool for Debian systems.
+Unix-based mail utilities for Debian systems.
 
 Installation Instructions and Tutorials: <http://unixmailtools.com>
 
